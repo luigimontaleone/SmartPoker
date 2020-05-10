@@ -7,10 +7,6 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import javax.swing.*;
-import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Main {
 
@@ -30,14 +26,19 @@ public class Main {
         ProbabilityCalculator probabilityCalculator = new ProbabilityCalculator();
         State phase = new Phase1(driver, budget, probabilityCalculator);
 
-        while(true)
-        {
-            State nextPhase = phase.handle();
-            if(nextPhase instanceof Phase0)
-                State.numRound++;
-            else
-                State.numPhases++;
-            phase = nextPhase;
+        try {
+            while (true) {
+                State nextPhase = phase.handle();
+                if (nextPhase instanceof Phase0)
+                    State.numRound++;
+                else
+                    State.numPhases++;
+                phase = nextPhase;
+            }
+        }
+        finally {
+            probabilityCalculator.closeDriver();
+            driver.quit();
         }
 
     }

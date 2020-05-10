@@ -99,4 +99,9 @@ public class ProbabilityCalculator {
             driver.findElement(By.xpath("/html[1]/body[1]/div[2]/div[6]/div[1]/div[1]/div[1]/button[1]/div[1]")).click();
         }catch (Exception e){}
     }
+
+    public void closeDriver()
+    {
+        driver.quit();
+    }
 }

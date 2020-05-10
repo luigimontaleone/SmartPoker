@@ -1,0 +1,35 @@
+%fatti
+decisione(fold). decisione(call). decisione(raise).
+
+%guess
+scelta(X)|nonScelta(X) :- decisione(X).
+
+%check
+
+%il numero di "scelte" deve essere 1.
+:- not #count{X:scelta(X)} = 1.
+
+%non è possibile che la scelta sia "raise" se il prezzoCall è uguale al budget
+:- scelta(raise), prezzoCall(X), budget(X).
+
+%non è possibile che la scelta sia "fold" se probabilità di vittoria è maggiore del 55% e l'avversario non ha fatto raise
+:- scelta(fold), probabilitaVittoria(X), X >= 55, avversarioRaise(Y), Y != 1.
+
+%non è possibile che la scelta sia "raise" se probabilità di vittoria è minore del 79%
+%Commentato per lasciare possibilità di bluff
+%:- scelta(raise), probabilitaVittoria(X), X <= 79.
+
+%la scelta deve essere "raise" se la probabilità di vittoria è maggiore del 70%
+:- nonScelta(raise), probabilitaVittoria(X), X >= 70, prezzoCall(Y), budget(Z), Y < Z.
+
+%la scelta non deve essere "fold" se prezzoCall è 0
+:- scelta(fold), prezzoCall(X), X = 0.
+
+%la scelta deve essere "fold" se l'avversario fa "raise" e la probabilità di vittoria è minore del 65% e il budget è minore di 400
+:- nonScelta(fold), probabilitaVittoria(X), X < 65, avversarioRaise(1), budget(Val), Val <= 400.
+
+%la scelta deve essere "fold" se l'avversario fa "raise" e la probabilità di vittoria è minore del 65% e il budget è compreso fra 400 e 500
+:- nonScelta(fold), probabilitaVittoria(X), X < 57, avversarioRaise(1), budget(Val), Val > 400, Val <= 500.
+
+%la scelta deve essere "fold" se l'avversario fa "raise" e la probabilità di vittoria è minore del 50% e il budget è maggiore di 500
+:- nonScelta(fold), probabilitaVittoria(X), X < 50, avversarioRaise(1), budget(Val), Val > 500.

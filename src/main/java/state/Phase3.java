@@ -10,7 +10,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class Phase3 extends State {
     public Phase3(WebDriver driver, Budget budget, ProbabilityCalculator probabilityCalculator) {
-        super(driver, budget, "src/main/resources/IA/TwoPlayers/ia3.txt", probabilityCalculator);
+        super(driver, budget, "src/main/resources/IA/TwoPlayers/"+State.profiling.getValue()+"/ia3.txt", probabilityCalculator);
     }
 
     @Override

@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 public class Phase1 extends State {
 
     public Phase1(WebDriver driver, Budget budget, ProbabilityCalculator probabilityCalculator) {
-        super(driver, budget, "src/main/resources/IA/TwoPlayers/ia1.txt", probabilityCalculator);
+        super(driver, budget, "src/main/resources/IA/TwoPlayers/"+State.profiling.getValue()+"/ia1.txt", probabilityCalculator);
     }
 
 

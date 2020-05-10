@@ -23,7 +23,8 @@ public abstract class State {
     protected static HashMap<String, Integer> behaviour;
     protected static int numRound = 0;
     protected static int numPhases = 0;
-    protected static Profiling profiling = new Profiling("unknown");
+    //protected static Profiling profiling = new Profiling("unknown");
+    protected static Profiling profiling = new Profiling("normale");
 
     static{
         behaviour = new HashMap<>();
@@ -73,13 +74,8 @@ public abstract class State {
     {
         Integer prezzoCall;
         boolean buioPagato = false;
-        for(String key : behaviour.keySet())
-        {
-            System.out.println(key+" "+behaviour.get(key));
-        }
-        System.out.println("");
 
-        if(numRound % 5 == 0 && numRound > 0) //facciamo il profiling solo delle ultime 5 mani
+        /*if(numRound % 5 == 0 && numRound > 0) //facciamo il profiling solo delle ultime 5 mani
         {
             AverageRaise averageRaise = new AverageRaise((behaviour.get("raise") / numPhases) * 100) ;
             AverageCall averageCall = new AverageCall((behaviour.get("call") / numPhases) * 100) ;
@@ -94,17 +90,25 @@ public abstract class State {
             behaviour.put("raise", 0);
             behaviour.put("fold", 0);
             behaviour.put("call", 0);
-        }
+        }*/
 
         do
         {
+            System.out.println("Fase : "+this.getClass().getName());
+
             sceltaAvversario = "";
             dlv.setProgram(pathIA);
 
             if(dealer.equals("seat0-button"))
             {
+                System.out.println("Gioca lui prima");
                 if(handleFold())
                     return false;
+            }
+            else
+            {
+                System.out.println("Giochiamo noi prima");
+                dlv.setSceltaAvversario(new SceltaAvversario(0));
             }
 
             //budget
@@ -128,6 +132,9 @@ public abstract class State {
 
             //execute dlv
             String risultato = dlv.runProgram();
+            System.out.println("prezzo call : "+prezzoCall);
+            System.out.println("budget : "+budget.getValue());
+            System.out.println("vittoria : "+probabilityCalculator.getWinningProbability());
             System.out.println("giocata : "+risultato);
             if(risultato.equals("raise"))
             {
@@ -211,6 +218,7 @@ public abstract class State {
             behaviour.put("raise", behaviour.get("raise") + 1);
             return "raise";
         }
+        dlv.setSceltaAvversario(new SceltaAvversario(0));
         behaviour.put("call", behaviour.get("call") + 1);
         return "";
     }
