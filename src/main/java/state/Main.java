@@ -36,6 +36,10 @@ public class Main {
                 phase = nextPhase;
             }
         }
+        catch(Exception e)
+        {
+            System.out.println("Game over");
+        }
         finally {
             probabilityCalculator.closeDriver();
             driver.quit();

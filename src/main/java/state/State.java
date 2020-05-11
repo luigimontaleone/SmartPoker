@@ -24,7 +24,7 @@ public abstract class State {
     protected static int numRound = 0;
     protected static int numPhases = 0;
     //protected static Profiling profiling = new Profiling("unknown");
-    protected static Profiling profiling = new Profiling("normale");
+    protected static Profiling profiling = new Profiling("aggressivo");
 
     static{
         behaviour = new HashMap<>();
