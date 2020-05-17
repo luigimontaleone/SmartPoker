@@ -24,7 +24,7 @@ public abstract class State {
     protected static int numRound = 0;
     protected static int numPhases = 0;
     //protected static Profiling profiling = new Profiling("unknown");
-    protected static Profiling profiling = new Profiling("giocaSempre");
+    protected static Profiling profiling = new Profiling("pauroso");
 
     static{
         behaviour = new HashMap<>();
@@ -96,6 +96,9 @@ public abstract class State {
         {
             System.out.println("Fase : "+this.getClass().getName());
 
+            boolean raisePrecedente = false;
+            if(sceltaAvversario.equals("raise"))
+                raisePrecedente = true;
             sceltaAvversario = "";
             dlv.setProgram(pathIA);
 
@@ -108,7 +111,10 @@ public abstract class State {
             else
             {
                 System.out.println("Giochiamo noi prima");
-                dlv.setSceltaAvversario(new SceltaAvversario(0));
+                if(raisePrecedente)
+                    dlv.setSceltaAvversario(new SceltaAvversario(1));
+                else
+                    dlv.setSceltaAvversario(new SceltaAvversario(0));
             }
 
             //budget

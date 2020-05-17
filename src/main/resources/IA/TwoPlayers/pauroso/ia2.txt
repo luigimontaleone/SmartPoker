@@ -1,0 +1,46 @@
+%fatti
+decisione(fold). decisione(call). decisione(raise).
+
+%guess
+scelta(X)|nonScelta(X) :- decisione(X).
+
+%check
+
+%il numero di "scelte" deve essere 1.
+:- not #count{X:scelta(X)} = 1.
+
+%la scelta non deve essere "fold" se prezzoCall è 0
+:- scelta(fold), prezzoCall(X), X = 0.
+
+%non è possibile che la scelta sia "raise" se il prezzoCall è uguale al budget
+:- scelta(raise), prezzoCall(X), budget(X).
+
+%SE L'AVVERSARIO NON FA RAISE -> O CHECK O RAISE
+% Check se X < 90 -- Check/Raise se X >= 90 && X < 100
+
+%la scelta non deve essere "raise" se probabilità vittoria è minore del 90%
+:- scelta(raise), probabilitaVittoria(X), X < 90, avversarioRaise(Y), Y != 1.
+
+
+%SE L'AVVERSARIO FA RAISE
+
+%la scelta deve essere "fold" se l'avversario fa "raise" e la probabilità di vittoria è minore del 80% e il budget è minore di 350
+:- nonScelta(fold), probabilitaVittoria(X), X < 80, avversarioRaise(1), budget(Val), Val <= 350.
+
+%la scelta deve essere "fold" se l'avversario fa "raise" e la probabilità di vittoria è minore del 75% e il budget è maggiore di 350 e minore di 700
+:- nonScelta(fold), probabilitaVittoria(X), X < 75, avversarioRaise(1), budget(Val), Val > 350, Val <= 700.
+
+%la scelta deve essere "fold" se l'avversario fa "raise" e la probabilità di vittoria è minore del 70% e il budget è maggiore di 700
+:- nonScelta(fold), probabilitaVittoria(X), X < 70, avversarioRaise(1), budget(Val), Val > 700.
+
+%la scelta deve essere "raise" se l'avversario fa "raise" e la probabilità di vittoria è maggiore del 90% e il budget è minore di 350
+:- nonScelta(raise), probabilitaVittoria(X), X > 90, avversarioRaise(1), budget(Val), Val <= 350.
+
+%la scelta deve essere "raise" se l'avversario fa "raise" e la probabilità di vittoria è maggiore del 85% e il budget è maggiore di 350 e minore di 700
+:- nonScelta(raise), probabilitaVittoria(X), X > 85, avversarioRaise(1), budget(Val), Val > 350, Val <= 700.
+
+%la scelta non deve essere "raise" se l'avversario fa "raise" e la probabilità di vittoria è minore del 85%
+:- scelta(raise), probabilitaVittoria(X), X <= 85, avversarioRaise(1).
+
+%la scelta non deve essere "fold" se l'avversario fa "raise" e la probabilità di vittoria è maggiore del 80%
+:- scelta(fold), probabilitaVittoria(X), X > 80, avversarioRaise(1).

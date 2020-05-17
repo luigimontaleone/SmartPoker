@@ -40,7 +40,7 @@ scelta(X)|nonScelta(X) :- decisione(X).
 %la scelta deve essere "fold" se l'avversario fa "raise" e la probabilità di vittoria è minore del 30% e il budget è maggiore di 700
 :- nonScelta(fold), probabilitaVittoria(X), X < 30, avversarioRaise(1), budget(Val), Val > 700.
 
-%la scelta non deve essere "raise" se l'avversario fa "raise" e la probabilità di vittoria è minore del 60%.
+%la scelta non deve essere "raise" se l'avversario fa "raise" e la probabilità di vittoria è minore del 80%.
 :- scelta(raise), probabilitaVittoria(X), X <= 80, avversarioRaise(1).
 
 %la scelta non deve essere "fold" se l'avversario fa "raise" e la probabilità di vittoria è maggiore del 50%
