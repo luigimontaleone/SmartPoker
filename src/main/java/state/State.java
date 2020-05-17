@@ -24,7 +24,7 @@ public abstract class State {
     protected static int numRound = 0;
     protected static int numPhases = 0;
     //protected static Profiling profiling = new Profiling("unknown");
-    protected static Profiling profiling = new Profiling("aggressivo");
+    protected static Profiling profiling = new Profiling("giocaSempre");
 
     static{
         behaviour = new HashMap<>();
@@ -207,6 +207,7 @@ public abstract class State {
         if(dump == null)
             return "";
         Integer prezzoCall = getPrezzoCall();
+        System.out.println("Prezzo Call Scelta Avversario"+prezzoCall);
         String text = driver.findElement(By.xpath("/html[1]/body[1]/div[1]/div[2]/div[3]")).getText();
         if(Pattern.matches("FOLDED.*", text)) {
             behaviour.put("fold", behaviour.get("fold") + 1);

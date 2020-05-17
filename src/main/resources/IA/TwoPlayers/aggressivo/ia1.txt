@@ -27,7 +27,7 @@ scelta(X)|nonScelta(X) :- decisione(X).
 :- nonScelta(raise), probabilitaVittoria(X), X >= 60, avversarioRaise(Y), Y != 1.
 
 %la scelta non deve essere "raise" se la probabilità di vittoria è minore del 45%.
-:- nonScelta(raise), probabilitaVittoria(X), X >= 45, avversarioRaise(Y), Y != 1.
+:- scelta(raise), probabilitaVittoria(X), X >= 45, avversarioRaise(Y), Y != 1.
 
 %SE L'AVVERSARIO FA RAISE
 
