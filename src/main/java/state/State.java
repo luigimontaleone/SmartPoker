@@ -20,16 +20,16 @@ public abstract class State {
     protected Budget budget;
     protected String pathIA;
     protected String sceltaAvversario;
-    protected static HashMap<String, Integer> behaviour;
+    protected static HashMap<String, Double> behaviour;
     protected static int numRound = 0;
     protected static int numPhases = 0;
     protected static Profiling profiling = new Profiling("unknown");
 
     static{
         behaviour = new HashMap<>();
-        behaviour.put("raise", 0);
-        behaviour.put("fold", 0);
-        behaviour.put("call", 0);
+        behaviour.put("raise", 0.0);
+        behaviour.put("fold", 0.0);
+        behaviour.put("call", 0.0);
     }
 
     public State(WebDriver driver, Budget budget, String pathIA, ProbabilityCalculator probabilityCalculator)
@@ -73,22 +73,27 @@ public abstract class State {
     {
         Integer prezzoCall;
         boolean buioPagato = false;
+        System.out.println("NUM RAISE "+ behaviour.get("raise"));
+        System.out.println("NUM CALL "+ behaviour.get("call"));
+        System.out.println("NUM FOLD "+ behaviour.get("fold"));
 
-        if(numRound % 5 == 0 && numRound > 0) //facciamo il profiling solo delle ultime 5 mani
+        if(numRound % 1 == 0 && numRound > 0) //facciamo il profiling solo delle ultime 5 mani
         {
-            AverageRaise averageRaise = new AverageRaise((behaviour.get("raise") / numPhases) * 100) ;
-            AverageCall averageCall = new AverageCall((behaviour.get("call") / numPhases) * 100) ;
-            AverageFold averageFold = new AverageFold((behaviour.get("fold") / numPhases) * 100) ;
+            AverageRaise averageRaise = new AverageRaise((int)Math.round((behaviour.get("raise") / numPhases) * 100)) ;
+            AverageCall averageCall = new AverageCall((int)Math.round((behaviour.get("call") / numPhases) * 100)) ;
+            AverageFold averageFold = new AverageFold((int)Math.round((behaviour.get("fold") / numPhases) * 100)) ;
 
+            dlvProfiling.setProgram("src/main/resources/IA/TwoPlayers/profiling.txt");
             dlvProfiling.setAverage(averageRaise);
             dlvProfiling.setAverage(averageCall);
             dlvProfiling.setAverage(averageFold);
-            dlvProfiling.setProgram("src/main/resources/IA/TwoPlayers/profiling.txt");
-            profiling.setValue(dlvProfiling.runProgram());
+            String sceltaProfiling = dlvProfiling.runProgram();
+            System.out.println("SCELTA PROFILING: "+sceltaProfiling);
+            profiling.setValue(sceltaProfiling);
 
-            behaviour.put("raise", 0);
-            behaviour.put("fold", 0);
-            behaviour.put("call", 0);
+            behaviour.put("raise", 0.0);
+            behaviour.put("fold", 0.0);
+            behaviour.put("call", 0.0);
         }
 
         System.out.println("Profiling: "+profiling.getValue());
@@ -213,20 +218,23 @@ public abstract class State {
         if(dump == null)
             return "";
         Integer prezzoCall = getPrezzoCall();
-        System.out.println("Prezzo Call Scelta Avversario"+prezzoCall);
+        System.out.println("Prezzo Call Scelta Avversario "+prezzoCall);
         String text = driver.findElement(By.xpath("/html[1]/body[1]/div[1]/div[2]/div[3]")).getText();
         if(Pattern.matches("FOLDED.*", text)) {
             behaviour.put("fold", behaviour.get("fold") + 1);
+            System.out.println("Scelta avversario : FOLD");
             return "fold";
         }
         else if(prezzoCall > 25)
         {
             dlv.setSceltaAvversario(new SceltaAvversario(1));
             behaviour.put("raise", behaviour.get("raise") + 1);
+            System.out.println("Scelta avversario : RAISE");
             return "raise";
         }
         dlv.setSceltaAvversario(new SceltaAvversario(0));
         behaviour.put("call", behaviour.get("call") + 1);
+        System.out.println("Scelta avversario : CALL");
         return "";
     }
 

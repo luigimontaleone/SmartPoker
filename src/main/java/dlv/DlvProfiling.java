@@ -6,6 +6,7 @@ import it.unical.mat.embasp.languages.asp.ASPInputProgram;
 public class DlvProfiling extends DlvHandler{
 
     public void setAverage(AverageRaise averageRaise) {
+        System.out.println("AVERAGE RAISE "+averageRaise.getValue());
         InputProgram facts= new ASPInputProgram();
         try {
             facts.addObjectInput(averageRaise);
@@ -16,6 +17,7 @@ public class DlvProfiling extends DlvHandler{
     }
 
     public void setAverage(AverageFold averageFold) {
+        System.out.println("AVERAGE FOLD "+averageFold.getValue());
         InputProgram facts= new ASPInputProgram();
         try {
             facts.addObjectInput(averageFold);
@@ -26,6 +28,7 @@ public class DlvProfiling extends DlvHandler{
     }
 
     public void setAverage(AverageCall averageCall) {
+        System.out.println("AVERAGE CALL "+averageCall.getValue());
         InputProgram facts= new ASPInputProgram();
         try {
             facts.addObjectInput(averageCall);

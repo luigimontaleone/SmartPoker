@@ -36,7 +36,6 @@ public class DlvChoice extends DlvHandler {
     }
 
     public void setSceltaAvversario(SceltaAvversario scelta) {
-        System.out.println("Scelta avversario : "+scelta.getRaise());
         InputProgram facts= new ASPInputProgram();
         try {
             facts.addObjectInput(scelta);
