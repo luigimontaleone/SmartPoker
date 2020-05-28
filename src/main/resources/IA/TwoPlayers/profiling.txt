@@ -1,15 +1,15 @@
 %averageRaise(X), averageCall(Y), averageFold(Z).
 
-//normale lui se la maggior parte delle volte fa call, il resto si divide in raise e fold -> noi giochiamo normale
+%normale lui se la maggior parte delle volte fa call, il resto si divide in raise e fold -> noi giochiamo normale
 scelta(normale) :- averageRaise(X), averageCall(Y), averageFold(Z), Y >= 40, Y <= 60, X >= 19, X <= 30, Z >= 21, Z <= 30.
 
-//aggressivo lui se la maggior parte delle volte fa raise e i call sono molto maggiori dei fold -> noi giochiamo giocaSempre
+%aggressivo lui se la maggior parte delle volte fa raise e i call sono molto maggiori dei fold -> noi giochiamo giocaSempre
 scelta(giocaSempre) :- averageRaise(X), averageCall(Y), averageFold(Z), Y >= 30, Y <= 40, X >= 50, Z >= 10, Z <= 20.
 
-//giocaSempre lui se la maggior parte delle volte fa call e i raise sono molto maggiori dei fold -> noi giochiamo pauroso
+%giocaSempre lui se la maggior parte delle volte fa call e i raise sono molto maggiori dei fold -> noi giochiamo pauroso
 scelta(pauroso) :- averageRaise(X), averageCall(Y), averageFold(Z), Y >= 50, X >= 30, X <= 40, Z <= 20.
 
-//pauroso lui se la maggior parte delle volte fa call e i fold sono molto maggiori dei raise -> noi giochiamo aggressivo
+%pauroso lui se la maggior parte delle volte fa call e i fold sono molto maggiori dei raise -> noi giochiamo aggressivo
 scelta(aggressivo) :- averageRaise(X), averageCall(Y), averageFold(Z), Y >= 50, X <= 19, Z >= 31, Z <= 50.
 
 scelta(unknown) :- not scelta(normale), not scelta(aggressivo), not scelta(pauroso), not scelta(giocaSempre).

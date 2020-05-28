@@ -29,10 +29,10 @@ public class Main {
         try {
             while (true) {
                 State nextPhase = phase.handle();
-                if (nextPhase instanceof Phase0)
+                if (nextPhase instanceof Phase0) {
+                    System.out.println("sono nella fase 0");
                     State.numRound++;
-                else
-                    State.numPhases++;
+                }
                 phase = nextPhase;
             }
         }

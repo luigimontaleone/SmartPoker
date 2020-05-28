@@ -43,8 +43,6 @@ public class DlvHandler {
         int n = 0;
         for(AnswerSet a: answers.getAnswersets())
         {
-            if(this.getClass() == DlvProfiling.class)
-                System.out.println("SONO NEGLI ANSWER SET");
             try {
                 for(Object obj: a.getAtoms())
                 {
@@ -59,6 +57,4 @@ public class DlvHandler {
         }
         return "";
     }
-
-
 }
