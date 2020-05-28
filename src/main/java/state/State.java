@@ -23,8 +23,7 @@ public abstract class State {
     protected static HashMap<String, Integer> behaviour;
     protected static int numRound = 0;
     protected static int numPhases = 0;
-    //protected static Profiling profiling = new Profiling("unknown");
-    protected static Profiling profiling = new Profiling("pauroso");
+    protected static Profiling profiling = new Profiling("unknown");
 
     static{
         behaviour = new HashMap<>();
@@ -75,7 +74,7 @@ public abstract class State {
         Integer prezzoCall;
         boolean buioPagato = false;
 
-        /*if(numRound % 5 == 0 && numRound > 0) //facciamo il profiling solo delle ultime 5 mani
+        if(numRound % 5 == 0 && numRound > 0) //facciamo il profiling solo delle ultime 5 mani
         {
             AverageRaise averageRaise = new AverageRaise((behaviour.get("raise") / numPhases) * 100) ;
             AverageCall averageCall = new AverageCall((behaviour.get("call") / numPhases) * 100) ;
@@ -90,8 +89,9 @@ public abstract class State {
             behaviour.put("raise", 0);
             behaviour.put("fold", 0);
             behaviour.put("call", 0);
-        }*/
+        }
 
+        System.out.println("Profiling: "+profiling.getValue());
         do
         {
             System.out.println("Fase : "+this.getClass().getName());

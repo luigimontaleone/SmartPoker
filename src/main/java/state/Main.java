@@ -11,7 +11,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class Main {
 
     public static void main(String args[]) {
-        String chromeDriverPath = "src/main/resources/chromedriver.exe" ;
+        String chromeDriverPath = "src/main/resources/chromedriver83.exe" ;
         System.setProperty("webdriver.chrome.driver", chromeDriverPath);
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--disable-gpu", "--window-size=1920,1200","--ignore-certificate-errors");
