@@ -73,11 +73,8 @@ public abstract class State {
     {
         Integer prezzoCall;
         boolean buioPagato = false;
-        System.out.println("NUM RAISE "+ behaviour.get("raise"));
-        System.out.println("NUM CALL "+ behaviour.get("call"));
-        System.out.println("NUM FOLD "+ behaviour.get("fold"));
 
-        if(numRound % 5 == 0 && numRound > 0) //facciamo il profiling solo delle ultime 5 mani
+        if(numRound % 2 == 0 && numRound > 0) //facciamo il profiling solo delle ultime 5 mani
         {
             numPhases = (int) (behaviour.get("raise") + behaviour.get("fold") + behaviour.get("call"));
             AverageRaise averageRaise = new AverageRaise((int)Math.round((behaviour.get("raise") / numPhases) * 100)) ;
@@ -88,7 +85,6 @@ public abstract class State {
             dlvProfiling.setAverage(averageCall);
             dlvProfiling.setAverage(averageFold);
             String sceltaProfiling = dlvProfiling.runProgram();
-            System.out.println("SCELTA PROFILING: "+sceltaProfiling);
             profiling.setValue(sceltaProfiling);
 
             behaviour.put("raise", 0.0);
@@ -97,10 +93,9 @@ public abstract class State {
             numPhases = 0;
             numRound = 0;
         }
-        System.out.println("num round:" + numRound);
+
         do
         {
-            System.out.println("Fase : "+this.getClass().getName());
 
             boolean raisePrecedente = false;
             if(sceltaAvversario.equals("raise"))
@@ -110,13 +105,11 @@ public abstract class State {
 
             if(dealer.equals("seat0-button"))
             {
-                //System.out.println("Gioca lui prima");
                 if(handleFold())
                     return false;
             }
             else
             {
-                //System.out.println("Giochiamo noi prima");
                 if(raisePrecedente)
                     dlv.setSceltaAvversario(new SceltaAvversario(1));
                 else
@@ -144,10 +137,6 @@ public abstract class State {
 
             //execute dlv
             String risultato = dlv.runProgram();
-            /*System.out.println("prezzo call : "+prezzoCall);
-            System.out.println("budget : "+budget.getValue());
-            System.out.println("vittoria : "+probabilityCalculator.getWinningProbability());*/
-            System.out.println("giocata : "+risultato);
 
             if(risultato.equals("raise"))
             {
@@ -219,12 +208,9 @@ public abstract class State {
     {
         new WebDriverWait(driver, 100).until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[1]/div[1]/div[3]")));
         String s = driver.findElement(By.xpath("/html/body/div[1]/div[1]/div[3]")).getText();
-        System.out.println("S: " + s);
         //check se abbiamo fatto all-in
         boolean v = Pattern.matches("ALL.*", s);
-        System.out.println("PATTERN: " + v);
         if(Pattern.matches("ALL.*", s)){
-            System.out.println("SCELTA GIOCATORE: ALL IN");
             return false;
         }
         return true;
@@ -235,17 +221,13 @@ public abstract class State {
         if(dump == null)
             return "";
         Integer prezzoCall = getPrezzoCall();
-        //System.out.println("Prezzo Call Scelta Avversario "+prezzoCall);
         String text = driver.findElement(By.xpath("/html[1]/body[1]/div[1]/div[2]/div[3]")).getText();
-        System.out.println("TEXT: " + text);
         if(Pattern.matches("FOLDED.*", text)) {
             behaviour.put("fold", behaviour.get("fold") + 1);
-            System.out.println("Scelta avversario : FOLD");
             return "fold";
         }
         else if(Pattern.matches("ALL.*", text)){
             behaviour.put("raise", behaviour.get("raise") + 1);
-            System.out.println("Scelta avversario : RAISE con ALL-IN");
             //ritorniamo fold perchè deve tornare alla fase 0, falso positivo
             return "fold";
         }
@@ -253,12 +235,10 @@ public abstract class State {
         {
             dlv.setSceltaAvversario(new SceltaAvversario(1));
             behaviour.put("raise", behaviour.get("raise") + 1);
-            System.out.println("Scelta avversario : RAISE");
             return "raise";
         }
         dlv.setSceltaAvversario(new SceltaAvversario(0));
         behaviour.put("call", behaviour.get("call") + 1);
-        System.out.println("Scelta avversario : CALL");
         return "";
     }
 

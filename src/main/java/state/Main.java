@@ -30,7 +30,6 @@ public class Main {
             while (true) {
                 State nextPhase = phase.handle();
                 if (nextPhase instanceof Phase0) {
-                    System.out.println("sono nella fase 0");
                     State.numRound++;
                 }
                 phase = nextPhase;
@@ -38,7 +37,7 @@ public class Main {
         }
         catch(Exception e)
         {
-            System.out.println("Game over");
+            //System.out.println("Game over");
         }
         finally {
             probabilityCalculator.closeDriver();
